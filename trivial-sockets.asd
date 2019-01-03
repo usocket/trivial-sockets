@@ -3,7 +3,9 @@
 (in-package #:trivial-sockets-system )
 
 (defsystem trivial-sockets
-    :version "0.3"
+    :version "0.4"
+    :author "Daniel Barlow"
+    :maintainer "Chun Tian (binghe)"
     :depends-on (#+sbcl sb-bsd-sockets)
     :components ((:file "defpackage")
 		 (:file "errors"  :depends-on ("defpackage"))
@@ -15,6 +17,7 @@
 		  #+openmcl "openmcl"
 		  #+lispworks "lispworks"
 		  #+armedbear "abcl"
+                  #+Digitool "mcl"
 		  :depends-on ("defpackage"))
 		 (:file "server" :depends-on ("defpackage"))
 		 ))
