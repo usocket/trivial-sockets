@@ -56,7 +56,8 @@
 (defun accept-connection (socket
 			  &key
 			  (external-format :default)
-			  (element-type 'character))
+                          (element-type 'character)
+                          (buffering :full)) ; (member :full :line :none)
   (unless (eql external-format :default)
     (error 'unsupported :feature :external-format))
   (handler-bind ((error (lambda (c) (error 'socket-error :nested-error c))))
@@ -67,6 +68,6 @@
                           :input t :output t
                           :element-type element-type
                           :auto-close t
-                          :buffering :full
+                          :buffering buffering
                           :name (pretty-stream-name peer-host peer-port))))))
 
