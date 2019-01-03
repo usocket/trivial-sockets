@@ -18,12 +18,15 @@
     (error 'unsupported :feature :external-format))
   (unless (and (eql local-host :any) (eql local-port 0))
     (error 'unsupported :feature :bind))
-  (unless (eql protocol :tcp)
+  (unless (member protocol '(:tcp :udp))
     (error 'unsupported :feature `(:protocol ,protocol)))
   ;; connect-to-inet-socket signals simple-erors.  not great
   (handler-bind ((error (lambda (c) (error 'socket-error :nested-error c))))
     (let ((s (ext:connect-to-inet-socket
-              (resolve-hostname peer-host) peer-port)))
+              (resolve-hostname peer-host) peer-port
+             (case protocol
+               (:tcp :stream)
+               (:udp :datagram)))))
       (sys:make-fd-stream s :input t :output t :element-type element-type
 			  :buffering :full
                           :name (pretty-stream-name peer-host peer-port)))))
@@ -33,15 +36,19 @@
                     (backlog 1)
                     (protocol :tcp))
   "Returns a SERVER object and the port that was bound, as multiple values"
-  (unless (eql protocol :tcp)
+  (unless (member protocol '(:tcp :udp))
     (error 'unsupported :feature `(:protocol ,protocol)))
   (handler-bind ((error (lambda (c) (error 'socket-error :nested-error c))))
     (let ((socket (if (equal (resolve-hostname host) "0.0.0.0")
                       ;; create-inet-listener barfs on `:host nil'
-                      (ext:create-inet-listener port :stream
+                      (ext:create-inet-listener port (case protocol
+                                                      (:tcp :stream)
+                                                      (:udp :datagram))
                                                 :reuse-address reuse-address
                                                 :backlog backlog)
-                      (ext:create-inet-listener port :stream
+                      (ext:create-inet-listener port (case protocol
+                                                      (:tcp :stream)
+                                                      (:udp :datagram))
                                                 :reuse-address reuse-address
                                                 :backlog backlog
                                                 :host host))))
