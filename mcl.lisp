@@ -1,5 +1,11 @@
-(in-package :trivial-sockets)
+;;;; This is a port to MCL 5.0 using the opentransport library.
+   
+;;; Unfortunately opentransport has a different way of dealing with
+;;; passive (server) side. The semantics of open-server and
+;;; accept-connection is therefor not quite right. It won't actually start
+;;; listening until the first accept-connection.
 
+(in-package :trivial-sockets)
 
 (require "OPENTRANSPORT")
 
