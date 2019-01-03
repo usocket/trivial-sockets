@@ -3,7 +3,7 @@
 (defun resolve-hostname (name)
   (cond
    ((eql name :any) "0.0.0.0")
-   ((typep name '(vector * 4)) (format nil "~{~A~^.~}" (coerce name 'list)))
+   ((typep name '(vector number 4)) (format nil "~{~A~^.~}" (coerce name 'list)))
    (t name)))
 
 (defun open-stream (peer-host peer-port 

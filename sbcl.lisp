@@ -2,8 +2,8 @@
 
 (defun resolve-hostname (name)
   (cond
-   ((eql name :any)  #(0 0 0 0))
-   ((typep name '(vector * 4)) name)
+   ((eql name :any) #(0 0 0 0))
+   ((typep name '(vector number 4)) name)
    (t (car (sb-bsd-sockets:host-ent-addresses
 	    (sb-bsd-sockets:get-host-by-name name))))))
 
