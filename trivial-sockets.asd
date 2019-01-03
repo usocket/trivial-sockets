@@ -6,6 +6,8 @@
     :version "0.4"
     :author "Daniel Barlow"
     :maintainer "Chun Tian (binghe)"
+    :licence "MIT"
+    :description "A trivial networking library for undemanding Internet applications"
     :depends-on (#+sbcl sb-bsd-sockets)
     :components ((:file "defpackage")
 		 (:file "errors"  :depends-on ("defpackage"))
